@@ -2,24 +2,20 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/htchoi-nurilab/go-msa/notification-service/config/database"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	if err := godotenv.Load("../.env"); err != nil {
+		log.Println(".env not found, using system env")
+	}
+
+	db := database.NewDatabase()
+
 	r := gin.Default()
 
-	// health check
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"service": "notification-service",
-			"status":  "ok",
-		})
-	})
-
-	log.Println("notification-service started on :8082")
-	if err := r.Run(":8082"); err != nil {
-		log.Fatal(err)
-	}
+	r.Run(":8082")
 }
