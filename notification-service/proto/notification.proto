@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package notification;
+
+option go_package = "github.com/htchoi-nurilab/go-msa/notification-service/proto;notificationpb";
+
+service NotificationService {
+  rpc CreateNotification(NotificationCreateRequest) returns (google.protobuf.Empty) {}
+}
+
+message NotificationCreateRequest {
+  int64 user_id = 1;
+  string name = 2;
+}
