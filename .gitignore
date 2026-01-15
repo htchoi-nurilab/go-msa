@@ -1,5 +1,9 @@
 ### IntelliJ IDEA ###
 .idea
 
+# Go workspace
+go.work
+go.work.sum
+
 ### Custom ###
 .env
