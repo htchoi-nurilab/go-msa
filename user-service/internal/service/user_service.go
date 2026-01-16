@@ -1,6 +1,10 @@
 package service
 
 import (
+	"context"
+	"log"
+
+	"github.com/htchoi-nurilab/go-msa/user-service/internal/client"
 	"github.com/htchoi-nurilab/go-msa/user-service/internal/domain"
 	"github.com/htchoi-nurilab/go-msa/user-service/internal/dto"
 	"github.com/htchoi-nurilab/go-msa/user-service/internal/repository"
@@ -8,14 +12,15 @@ import (
 )
 
 type UserService struct {
-	userRepo repository.UserRepository
+	userRepo   repository.UserRepository
+	notiClient client.NotificationClient
 }
 
-func NewUserService(userRepo repository.UserRepository) *UserService {
-	return &UserService{userRepo: userRepo}
+func NewUserService(userRepo repository.UserRepository, notiClient client.NotificationClient) *UserService {
+	return &UserService{userRepo: userRepo, notiClient: notiClient}
 }
 
-func (UserSvc *UserService) CreateUser(request dto.UserCreateRequest) (dto.UserCreateResponse, error) {
+func (s *UserService) CreateUser(ctx context.Context, request dto.UserCreateRequest) (dto.UserCreateResponse, error) {
 	hashedPassword, err := hashPassword(request.Password)
 	if err != nil {
 		return dto.UserCreateResponse{}, err
@@ -27,8 +32,14 @@ func (UserSvc *UserService) CreateUser(request dto.UserCreateRequest) (dto.UserC
 		Password: hashedPassword,
 	}
 
-	if err := UserSvc.userRepo.Save(&user); err != nil {
+	if err := s.userRepo.Save(&user); err != nil {
 		return dto.UserCreateResponse{}, err
+	}
+
+	if s.notiClient != nil {
+		if err := s.notiClient.CreateWelcomeNotification(ctx, user.ID, user.Name); err != nil {
+			log.Println("failed to create notification:", err)
+		}
 	}
 
 	return dto.UserCreateResponse{

@@ -1,0 +1,16 @@
+services:
+  traefik:
+    image: traefik:v3.0
+    command:
+      - --api.insecure=true
+      - --entrypoints.web.address=:80
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+    ports:
+      - "8088:80"
+      - "8090:8080"
+
+    volumes:
+      - ./traefik:/etc/traefik/dynamic
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

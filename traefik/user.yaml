@@ -1,0 +1,13 @@
+http:
+  routers:
+    user:
+      rule: "Host(`user.localhost`)"
+      entryPoints:
+        - web
+      service: user
+
+  services:
+    user:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8081"

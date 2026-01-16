@@ -7,6 +7,7 @@ import (
 
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"github.com/htchoi-nurilab/go-msa/notification-service/config/database"
 	"github.com/htchoi-nurilab/go-msa/notification-service/internal/domain"
 	"github.com/htchoi-nurilab/go-msa/notification-service/internal/grpcserver"
@@ -48,4 +49,8 @@ func main() {
 	if err := grpcSrv.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
+
+	r := gin.Default()
+
+	r.Run(":8082")
 }
