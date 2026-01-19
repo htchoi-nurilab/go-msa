@@ -28,6 +28,19 @@ services:
     volumes:
       - user_pgdata:/var/lib/postgresql
 
+  notification-service:
+    image: notification-service
+    container_name: notification-service
+    restart: always
+    depends_on:
+      - notification-db
+    environment:
+      NOTIFICATION_DB_USER: admin
+      NOTIFICATION_DB_PASSWORD: 1234
+      NOTIFICATION_DB_HOST: notification-db
+      NOTIFICATION_DB_NAME: notificationdb
+      NOTIFICATION_DB_PORT: 5432
+
   notification-db:
     image: postgres
     container_name: notification-db
