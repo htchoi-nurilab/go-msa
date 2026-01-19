@@ -1,7 +1,7 @@
 services:
   user-db:
     image: postgres
-    container_name: user_db
+    container_name: user-db
     restart: always
     environment:
       POSTGRES_USER: admin
@@ -15,7 +15,7 @@ services:
 
   notification-db:
     image: postgres
-    container_name: notification_db
+    container_name: notification-db
     restart: always
     environment:
       POSTGRES_USER: admin
