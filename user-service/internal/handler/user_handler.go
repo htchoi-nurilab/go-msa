@@ -30,7 +30,7 @@ func (h *UserHandler) createUser(c *gin.Context) {
 		return
 	}
 
-	res, err := h.userSvc.CreateUser(req)
+	res, err := h.userSvc.CreateUser(c.Request.Context(), req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": err.Error(),
