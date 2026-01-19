@@ -27,23 +27,6 @@ services:
     volumes:
       - notification_pgdata:/var/lib/postgresql
 
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: 1234
-      TZ: Asia/Seoul
-    ports:
-      - "5050:80"
-    depends_on:
-      - user-db
-      - notification-db
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-
 volumes:
   user_pgdata:
   notification_pgdata:
-  pgadmin_data:
