@@ -22,7 +22,7 @@ func (d *Database) DB() *gorm.DB {
 func NewDatabase() *Database {
 	newLogger := gLogger.Default.LogMode(gLogger.Info)
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Seoul",
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		os.Getenv("NOTIFICATION_DB_HOST"),
 		os.Getenv("NOTIFICATION_DB_USER"),
 		os.Getenv("NOTIFICATION_DB_PASSWORD"),
