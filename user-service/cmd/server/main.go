@@ -1,8 +1,8 @@
 package main
 
 import (
-	"flag"
 	"log"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -18,10 +18,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var (
-	addr = flag.String("addr", "localhost:50051", "the address to connect to")
-)
-
 func main() {
 	if err := godotenv.Load("../.env"); err != nil {
 		log.Println(".env not found, using system env")
@@ -32,10 +28,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	flag.Parse()
+	addr := os.Getenv("NOTIFICATION_GRPC_SERVER_ADDR")
+	if addr == "" {
+		log.Fatal("NOTIFICATION_GRPC_SERVER_ADDR is not set")
+	}
 
 	conn, err := grpc.NewClient(
-		*addr,
+		addr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
